@@ -1,5 +1,6 @@
 export const FsCommands = {
   cat: "cat",
+  add: "add",
 };
 
 export const NavigationCommands = {
@@ -23,3 +24,11 @@ export const getHelloMessage = (username) =>
   `Welcome to the File Manager, ${username}!`;
 export const getByMessage = (username) =>
   `Thank you for using File Manager, ${username}, goodbye!`;
+
+export const createInvalidCommandError = (command) => {
+  throw new Error(`Invalid input: ${command}`);
+};
+
+export const createFailedOperationError = (command) => {
+  throw new Error(`Operation failed: ${command}`);
+};

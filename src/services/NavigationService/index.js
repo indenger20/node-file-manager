@@ -7,15 +7,17 @@ import {
   getDirrectoryMessage,
 } from "../../constants/index.js";
 import { getSpecificDir, getFiles } from "./helpers.js";
+import { getDirAndFileName } from "../../helpers/index.js";
 
 const userHomeDir = os.homedir();
-console.log("userHomeDir", userHomeDir);
+
+const { __dirname } = getDirAndFileName(import.meta.url);
 
 class NavigationService {
   currentPath;
 
   constructor() {
-    this.currentPath = path.resolve(userHomeDir);
+    this.currentPath = path.resolve(__dirname, "../../../");
   }
 
   __updateCurrentPath(newPath) {
@@ -62,7 +64,7 @@ class NavigationService {
 
     return {
       type: "log",
-      data: getDirrectoryMessage(this.currentPath),
+      data: null,
     };
   }
 
@@ -75,7 +77,7 @@ class NavigationService {
 
     return {
       type: "log",
-      data: getDirrectoryMessage(this.currentPath),
+      data: null,
     };
   }
 }

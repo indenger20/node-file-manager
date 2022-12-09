@@ -1,15 +1,9 @@
-import path from "path";
-import { getDirAndFileName } from "../../helpers/index.js";
 import { getArgs } from "../../helpers/getArgs.js";
 import { SystemCommands, getByMessage } from "../../constants/index.js";
 import { getInputCommand } from "../../helpers/getInputCommand.js";
 
-const { __dirname } = getDirAndFileName(import.meta.url);
-
 class SystemService {
-  constructor() {
-    this.currentPath = path.resolve(__dirname, "../../../");
-  }
+  constructor() {}
 
   async init(input) {
     const command = getInputCommand(input);

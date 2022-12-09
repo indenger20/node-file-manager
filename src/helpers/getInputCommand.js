@@ -4,3 +4,10 @@ export const getInputCommand = (input = "") => {
 
   return command;
 };
+
+export const getInputBySeparator= (input = "", separator = ' ') => {
+  const formattedInput = input.trim();
+  const result = formattedInput.split(separator);
+
+  return result;
+};
