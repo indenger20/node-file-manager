@@ -1,6 +1,7 @@
 export const FsCommands = {
   cat: "cat",
   add: "add",
+  rn: "rn",
 };
 
 export const NavigationCommands = {
