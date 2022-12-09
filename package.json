@@ -5,7 +5,8 @@
   "repository": "https://github.com/indenger20/node-task-manager.git",
   "author": "yaroslav.sklema <yaroslav.sklema@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js -- --username=yaro"
   }
 }
