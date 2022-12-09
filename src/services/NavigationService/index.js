@@ -1,21 +1,31 @@
 import path from "path";
 import { access } from "node:fs/promises";
-import { getDirAndFileName } from "../../helpers/index.js";
+import os from "os";
 import { getInputCommand } from "../../helpers/getInputCommand.js";
-import { NavigationCommands } from "../../constants/index.js";
+import {
+  NavigationCommands,
+  getDirrectoryMessage,
+} from "../../constants/index.js";
 import { getSpecificDir, getFiles } from "./helpers.js";
 
-const { __dirname } = getDirAndFileName(import.meta.url);
+const userHomeDir = os.homedir();
+console.log("userHomeDir", userHomeDir);
 
 class NavigationService {
   currentPath;
 
   constructor() {
-    this.currentPath = path.resolve(__dirname, "../../../");
+    this.currentPath = path.resolve(userHomeDir);
   }
 
   __updateCurrentPath(newPath) {
-    this.currentPath = newPath;
+    const relative = path.relative(userHomeDir, newPath);
+    const isSubDir =
+      relative && !relative.startsWith("..") && !path.isAbsolute(relative);
+    const isEqualDir = newPath === userHomeDir;
+    if (isSubDir || isEqualDir) {
+      this.currentPath = newPath;
+    }
   }
 
   async __isExistsDir(path) {
@@ -52,7 +62,7 @@ class NavigationService {
 
     return {
       type: "log",
-      data: newPath,
+      data: getDirrectoryMessage(this.currentPath),
     };
   }
 
@@ -65,7 +75,7 @@ class NavigationService {
 
     return {
       type: "log",
-      data: newPath,
+      data: getDirrectoryMessage(this.currentPath),
     };
   }
 }

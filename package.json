@@ -7,6 +7,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js -- --username=yaro"
+    "start": "node src/index.js",
+    "start:mock": "node src/index.js --username=yaro"
   }
 }

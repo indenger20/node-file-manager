@@ -30,7 +30,7 @@ class Logger {
     const currentDate = new Date();
     const message = `${currentDate}: ${err.message}`;
     this.__stream.write(`${message} \n`);
-    console.error(message);
+    console.error(err.message);
   }
 }
 

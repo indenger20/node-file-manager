@@ -1,11 +1,13 @@
 class OutputService {
   constructor() {}
   write({ data, type }) {
+    if (!data) return;
+    
     if (type === "table") {
       console.table(data, ["Name", "Type"]);
       return;
     }
-    console.log("OutputService:", data);
+    console.log(data);
   }
 }
 

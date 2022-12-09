@@ -9,17 +9,20 @@ const getCdPath = (input = "") => {
 
 export const getFiles = async (currentPath) => {
   const files = await readdir(currentPath);
-
   const formattedPromises = files.map(async (file) => {
-    const stats = await stat(path.resolve(currentPath, file));
-    const type = stats.isDirectory() ? "directory" : "file";
-    return {
-      Name: file,
-      Type: type,
-    };
+    try {
+      const stats = await stat(path.resolve(currentPath, file));
+      const type = stats.isDirectory() ? "directory" : "file";
+      return {
+        Name: file,
+        Type: type,
+      };
+    } catch {
+      return null;
+    }
   });
 
-  const results = await Promise.all(formattedPromises);
+  const results = (await Promise.all(formattedPromises)).filter(Boolean);
   return results;
 };
 
