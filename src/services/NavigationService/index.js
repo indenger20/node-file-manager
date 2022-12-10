@@ -1,13 +1,14 @@
 import path from "path";
-import { access } from "node:fs/promises";
 import os from "os";
 import { getInputCommand } from "../../helpers/getInputCommand.js";
 import {
   NavigationCommands,
-  getDirrectoryMessage,
+  createFailedOperationError,
 } from "../../constants/index.js";
-import { getSpecificDir, getFiles } from "./helpers.js";
+import { getSpecificDir } from "./helpers.js";
 import { getDirAndFileName } from "../../helpers/index.js";
+import { isFileOrDirExisting } from "../../helpers/fs.js";
+import { getFiles } from "../../helpers/fs.js";
 
 const userHomeDir = os.homedir();
 
@@ -30,17 +31,13 @@ class NavigationService {
     }
   }
 
-  async __isExistsDir(path) {
-    await access(path);
-  }
-
   async init(input) {
     const command = getInputCommand(input);
     switch (command) {
       case NavigationCommands.ls:
         return this.ls();
       case NavigationCommands.up:
-        return this.up();
+        return this.up(input);
       case NavigationCommands.cd:
         return this.cd(input);
     }
@@ -55,10 +52,13 @@ class NavigationService {
     };
   }
 
-  async up() {
+  async up(input) {
     const newPath = path.resolve(this.currentPath, "../");
+    const isNotExistingDir = !(await isFileOrDirExisting(newPath));
 
-    await this.__isExistsDir(newPath);
+    if (isNotExistingDir) {
+      createFailedOperationError(input);
+    }
 
     this.__updateCurrentPath(newPath);
 
@@ -70,8 +70,11 @@ class NavigationService {
 
   async cd(input) {
     const newPath = getSpecificDir(this.currentPath, input);
+    const isNotExistingDir = !(await isFileOrDirExisting(newPath));
 
-    await this.__isExistsDir(newPath);
+    if (isNotExistingDir) {
+      createFailedOperationError(input);
+    }
 
     this.__updateCurrentPath(newPath);
 

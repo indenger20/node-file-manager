@@ -7,9 +7,11 @@ import {
   createInvalidCommandError,
 } from "../../constants/index.js";
 import { getInputCommand } from "../../helpers/getInputCommand.js";
+import { isFileOrDirExisting, getFiles } from "../../helpers/fs.js";
 import {
   getAndValidateFirstAndSecondParameter,
   getAndValidateFirstParameter,
+  copyFileAndDir,
 } from "./helpers.js";
 
 class FileSystemService {
@@ -24,6 +26,8 @@ class FileSystemService {
         return this.add(input, currentPath);
       case FsCommands.rn:
         return this.rn(input, currentPath);
+      case FsCommands.cp:
+        return this.cp(input, currentPath);
     }
   }
 
@@ -64,12 +68,43 @@ class FileSystemService {
       createInvalidCommandError(input);
     }
 
-    const filePath = path.resolve(currentPath, firstParameter);
-    const fileDir = path.dirname(filePath);
+    const baseFile = path.resolve(currentPath, firstParameter);
+    const fileDir = path.dirname(baseFile);
     const newFilePath = path.resolve(fileDir, secondParameter);
+    const isNewFileExisting = await isFileOrDirExisting(newFilePath);
+
+    if (isNewFileExisting) {
+      createFailedOperationError(input);
+    }
 
     try {
-      await rename(filePath, newFilePath);
+      await rename(baseFile, newFilePath);
+      return {
+        type: "log",
+        data: "Success!",
+      };
+    } catch {
+      createFailedOperationError(input);
+    }
+  }
+
+  async cp(input, currentPath) {
+    const {
+      firstParameter,
+      secondParameter,
+    } = getAndValidateFirstAndSecondParameter(input);
+
+    const basePath = path.resolve(currentPath, firstParameter);
+    const newPath = path.resolve(currentPath, secondParameter);
+    const isNewFileExisting = await isFileOrDirExisting(newPath);
+
+    if (isNewFileExisting) {
+      createFailedOperationError(input);
+    }
+
+    try {
+      const promises = await copyFileAndDir(basePath, newPath);
+      await Promise.allSettled(promises);
       return {
         type: "log",
         data: "Success!",
