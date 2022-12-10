@@ -4,6 +4,7 @@ import { createReadStream } from "node:fs";
 import {
   FsCommands,
   createFailedOperationError,
+  createInvalidCommandError,
 } from "../../constants/index.js";
 import { getInputCommand } from "../../helpers/getInputCommand.js";
 import {
@@ -57,11 +58,18 @@ class FileSystemService {
       firstParameter,
       secondParameter,
     } = getAndValidateFirstAndSecondParameter(input);
+    const isInvalidSecondParameter = secondParameter.split("/").length !== 1;
+
+    if (isInvalidSecondParameter) {
+      createInvalidCommandError(input);
+    }
 
     const filePath = path.resolve(currentPath, firstParameter);
+    const fileDir = path.dirname(filePath);
+    const newFilePath = path.resolve(fileDir, secondParameter);
 
     try {
-      await rename(filePath, secondParameter);
+      await rename(filePath, newFilePath);
       return {
         type: "log",
         data: "Success!",

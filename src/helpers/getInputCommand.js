@@ -5,9 +5,10 @@ export const getInputCommand = (input = "") => {
   return command;
 };
 
-export const getInputBySeparator= (input = "", separator = ' ') => {
+export const getInputBySeparatorSpace = (input = "") => {
   const formattedInput = input.trim();
-  const result = formattedInput.split(separator);
-
+  const result = formattedInput
+    .match(/(?:[^\s"]+|"[^"]*")+/g)
+    .map((parameter) => parameter.replace(/"|'/g, ""));
   return result;
 };

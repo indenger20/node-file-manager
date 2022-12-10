@@ -4,7 +4,8 @@ import { readdir, stat } from "node:fs/promises";
 const getCdPath = (input = "") => {
   const formattedInput = input.trim();
   const secondParameter = formattedInput.split("cd ")[1];
-  return secondParameter;
+  const formattedOutput = secondParameter.replace(/"|'/g, '');
+  return formattedOutput;
 };
 
 export const getFiles = async (currentPath) => {
