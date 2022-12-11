@@ -1,5 +1,5 @@
 import path from "path";
-import os from "os";
+import { homedir } from "os";
 import { getInputCommand } from "../../helpers/getInputCommand.js";
 import {
   NavigationCommands,
@@ -10,7 +10,7 @@ import { getDirAndFileName } from "../../helpers/index.js";
 import { isFileOrDirExisting } from "../../helpers/fs.js";
 import { getFiles } from "../../helpers/fs.js";
 
-const userHomeDir = os.homedir();
+const userHomeDir = homedir();
 
 const { __dirname } = getDirAndFileName(import.meta.url);
 

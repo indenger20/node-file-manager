@@ -17,11 +17,16 @@ export const SystemCommands = {
   exit: ".exit",
 };
 
-export const AllCommands = Object.entries({
-  ...FsCommands,
-  ...NavigationCommands,
-  ...SystemCommands,
-}).map((entry) => entry[1]);
+export const OSCommands = {
+  os: "os",
+  parameters: {
+    eol: "--EOL",
+    cpus: "--cpus",
+    homedir: "--homedir",
+    username: "--username",
+    architecture: "--architecture",
+  },
+};
 
 export const getDirrectoryMessage = (path) => `You are currently in ${path}`;
 export const getHelloMessage = (username) =>
