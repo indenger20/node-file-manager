@@ -40,6 +40,14 @@ try {
             data: getDirrectoryMessage(navigationService.currentPath),
           });
         });
+
+        output.data.on("error", (err) => {
+          logger.error(err);
+          outputService.write({
+            type: "log",
+            data: getDirrectoryMessage(navigationService.currentPath),
+          });
+        });
       } else {
         outputService.write(output);
         outputService.write({
