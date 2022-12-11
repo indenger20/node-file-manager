@@ -2,7 +2,7 @@ import path from "path";
 import { createReadStream, createWriteStream } from "node:fs";
 import { mkdir, stat } from "node:fs/promises";
 import { getInputBySeparatorSpace } from "../../helpers/getInputCommand.js";
-import { getFiles } from "../../helpers/fs.js";
+import { getFiles, isFileOrDirExisting } from "../../helpers/fs.js";
 import { createInvalidCommandError } from "../../constants/index.js";
 
 export const getAndValidateFirstParameter = (input) => {
@@ -55,7 +55,19 @@ export const copyFileAndDir = async (basePath, newPath) => {
   if (isFile) {
     return [await copyFile(basePath, newPath)];
   }
-  await mkdir(newPath);
+
+  const isDirExist = await isFileOrDirExisting(path.join(newPath));
+  console.log("isDirExist", isDirExist);
+  if (!isDirExist) {
+    await mkdir(newPath);
+  } else {
+    const dirNames = basePath.split("/");
+    const dirName = dirNames[dirNames.length - 1];
+    newPath = path.resolve(newPath, dirName);
+    console.log('newPath', newPath);
+    await mkdir(newPath);
+  }
+
   const files = await getFiles(basePath);
   const promises = files.map(async (file) => {
     if (file.Type === "directory") {

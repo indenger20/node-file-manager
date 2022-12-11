@@ -1,5 +1,5 @@
 import path from "path";
-import { writeFile, rename } from "node:fs/promises";
+import { writeFile, rename, rm } from "node:fs/promises";
 import { createReadStream } from "node:fs";
 import {
   FsCommands,
@@ -28,6 +28,8 @@ class FileSystemService {
         return this.rn(input, currentPath);
       case FsCommands.cp:
         return this.cp(input, currentPath);
+      case FsCommands.mv:
+        return this.mv(input, currentPath);
     }
   }
 
@@ -96,15 +98,26 @@ class FileSystemService {
 
     const basePath = path.resolve(currentPath, firstParameter);
     const newPath = path.resolve(currentPath, secondParameter);
-    const isNewFileExisting = await isFileOrDirExisting(newPath);
-
-    if (isNewFileExisting) {
-      createFailedOperationError(input);
-    }
-
     try {
       const promises = await copyFileAndDir(basePath, newPath);
       await Promise.allSettled(promises);
+      return {
+        type: "log",
+        data: "Success!",
+      };
+    } catch {
+      createFailedOperationError(input);
+    }
+  }
+
+  async mv(input, currentPath) {
+    const { firstParameter } = getAndValidateFirstAndSecondParameter(input);
+
+    const baseFile = path.resolve(currentPath, firstParameter);
+
+    await this.cp(input, currentPath);
+    try {
+      await rm(baseFile, { recursive: true, force: true });
       return {
         type: "log",
         data: "Success!",
