@@ -30,6 +30,8 @@ class FileSystemService {
         return this.cp(input, currentPath);
       case FsCommands.mv:
         return this.mv(input, currentPath);
+      case FsCommands.rm:
+        return this.rm(input, currentPath);
     }
   }
 
@@ -125,6 +127,24 @@ class FileSystemService {
     } catch {
       createFailedOperationError(input);
     }
+  }
+
+  async rm(input, currentPath) {
+    const firstParameter = getAndValidateFirstParameter(input);
+    const baseFile = path.resolve(currentPath, firstParameter);
+
+    const isBaseFileExisting = await isFileOrDirExisting(baseFile);
+
+    if (!isBaseFileExisting) {
+      createFailedOperationError(input);
+    }
+
+    await rm(baseFile, { recursive: true, force: true });
+
+    return {
+      type: "log",
+      data: "Success!",
+    };
   }
 }
 

@@ -4,6 +4,7 @@ export const FsCommands = {
   rn: "rn",
   cp: "cp",
   mv: "mv",
+  rm: "rm",
 };
 
 export const NavigationCommands = {
