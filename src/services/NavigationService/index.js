@@ -21,7 +21,7 @@ class NavigationService {
     this.currentPath = path.resolve(__dirname, "../../../");
   }
 
-  __updateCurrentPath(newPath) {
+  #updateCurrentPath(newPath) {
     const relative = path.relative(userHomeDir, newPath);
     const isSubDir =
       relative && !relative.startsWith("..") && !path.isAbsolute(relative);
@@ -60,7 +60,7 @@ class NavigationService {
       createFailedOperationError(input);
     }
 
-    this.__updateCurrentPath(newPath);
+    this.#updateCurrentPath(newPath);
 
     return {
       type: "log",
@@ -76,7 +76,7 @@ class NavigationService {
       createFailedOperationError(input);
     }
 
-    this.__updateCurrentPath(newPath);
+    this.#updateCurrentPath(newPath);
 
     return {
       type: "log",

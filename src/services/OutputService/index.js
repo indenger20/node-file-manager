@@ -1,5 +1,3 @@
-import { rl } from "../../readline/index.js";
-
 class OutputService {
   constructor() {}
   write({ data, type }) {
@@ -12,22 +10,12 @@ class OutputService {
 
     if (Array.isArray(data)) {
       data.forEach((message) => {
-        rl.write(message + "\n");
+        console.log(message + "\n");
       });
       return;
     }
 
-    rl.write(data + "\n");
-  }
-
-  log(data) {
-    if (Array.isArray(data)) {
-      data.forEach((message) => {
-        console.log(message);
-      });
-      return;
-    }
-    console.log(data);
+    console.log(data + "\n");
   }
 }
 

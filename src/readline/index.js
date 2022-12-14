@@ -11,6 +11,7 @@ import { inputResolver } from "../resolver/index.js";
 export const rl = createInterface({
   input: stdin,
   output: stdout,
+  prompt: "",
 });
 
 export const readline = async () => {
@@ -28,18 +29,18 @@ export const readline = async () => {
         });
 
         output.data.on("end", () => {
-          outputService.log(
-            getDirrectoryMessage(navigationService.currentPath)
-          );
+          outputService.write({
+            type: "log",
+            data: getDirrectoryMessage(navigationService.currentPath),
+          });
         });
 
         output.data.on("error", (err) => {
           logger.error(err);
-          outputService.log(
-            outputService.log(
-              getDirrectoryMessage(navigationService.currentPath)
-            )
-          );
+          outputService.write({
+            type: "log",
+            data: getDirrectoryMessage(navigationService.currentPath),
+          });
         });
       } else {
         outputService.write(output);
@@ -47,14 +48,17 @@ export const readline = async () => {
     } catch (err) {
       logger.error(err);
     }
-    outputService.log(getDirrectoryMessage(navigationService.currentPath));
+    outputService.write({
+      type: "log",
+      data: getDirrectoryMessage(navigationService.currentPath),
+    });
   });
 
   rl.on("SIGINT", async (e) => {
     const triggerCommand = ".exit";
     const module = inputResolver(triggerCommand);
     const output = await module.init(triggerCommand);
-    outputService.log(output.data);
+    outputService.write(output);
     process.exit();
   });
 };

@@ -8,28 +8,33 @@ const { __dirname } = getDirAndFileName(import.meta.url);
 const logDir = path.resolve(__dirname, "../../logs");
 
 class Logger {
-  __stream;
+  #stream;
   constructor() {
-    this.__prepare();
+    this.#prepare();
   }
 
-  async __prepare() {
+  async #prepare() {
     try {
       await mkdir(logDir, { recursive: true });
       const stream = createWriteStream(path.resolve(logDir, "./logs.txt"), {
         encoding: "utf-8",
         flags: "a",
       });
-      this.__stream = stream;
+      this.#stream = stream;
     } catch (err) {
       console.error(err);
     }
   }
 
   error(err) {
+    if (!this.#stream) {
+      console.error(err.message);
+      return;
+    }
+
     const currentDate = new Date();
     const message = `${currentDate}: ${err.message}`;
-    this.__stream.write(`${message} \n`);
+    this.#stream.write(`${message} \n`);
     console.error(err.message);
   }
 }

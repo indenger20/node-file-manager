@@ -9,10 +9,14 @@ try {
   const args = getArgs(process.argv);
 
   if (args.username) {
-    outputService.log([
-      getHelloMessage(args.username),
-      getDirrectoryMessage(navigationService.currentPath),
-    ]);
+    outputService.write({
+      type: "log",
+      data: [
+        getHelloMessage(args.username),
+        getDirrectoryMessage(navigationService.currentPath),
+      ],
+    });
+
     readline();
   } else {
     process.exit();
