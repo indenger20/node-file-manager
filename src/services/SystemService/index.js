@@ -15,7 +15,6 @@ class SystemService {
 
   async exit() {
     const args = getArgs(process.argv);
-    process.stdin.destroy();
 
     return {
       type: "log",

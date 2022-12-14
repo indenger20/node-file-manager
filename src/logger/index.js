@@ -1,6 +1,6 @@
 import path from "path";
 import { createWriteStream } from "node:fs";
-import { mkdir } from 'node:fs/promises';
+import { mkdir } from "node:fs/promises";
 import { getDirAndFileName } from "../helpers/index.js";
 
 const { __dirname } = getDirAndFileName(import.meta.url);

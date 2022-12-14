@@ -34,14 +34,12 @@ export const copyFileAndDir = async (basePath, newPath) => {
   }
 
   const isDirExist = await isFileOrDirExisting(path.join(newPath));
-  console.log("isDirExist", isDirExist);
   if (!isDirExist) {
     await mkdir(newPath);
   } else {
     const dirNames = basePath.split("/");
     const dirName = dirNames[dirNames.length - 1];
     newPath = path.resolve(newPath, dirName);
-    console.log('newPath', newPath);
     await mkdir(newPath);
   }
 
