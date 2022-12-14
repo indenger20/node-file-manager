@@ -1,6 +1,7 @@
 import { getArgs } from "../../helpers/getArgs.js";
 import { SystemCommands, getByMessage } from "../../constants/index.js";
 import { getInputCommand } from "../../helpers/getInputCommand.js";
+import { rl } from "../../readline/index.js";
 
 class SystemService {
   constructor() {}
@@ -15,7 +16,7 @@ class SystemService {
 
   async exit() {
     const args = getArgs(process.argv);
-
+    rl.close();
     return {
       type: "log",
       data: getByMessage(args.username),

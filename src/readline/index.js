@@ -2,7 +2,7 @@ import { createInterface } from "readline/promises";
 import { stdin, stdout, exit } from "process";
 import { ReadStream } from "node:fs";
 
-import { getDirrectoryMessage } from "../constants/index.js";
+import { getDirrectoryMessage, SystemCommands } from "../constants/index.js";
 import navigationService from "../services/NavigationService/index.js";
 import outputService from "../services/OutputService/index.js";
 import logger from "../logger/index.js";
@@ -55,10 +55,10 @@ export const readline = async () => {
   });
 
   rl.on("SIGINT", async (e) => {
-    const triggerCommand = ".exit";
+    const triggerCommand = SystemCommands.exit;
     const module = inputResolver(triggerCommand);
     const output = await module.init(triggerCommand);
     outputService.write(output);
-    process.exit();
+    rl.close();
   });
 };

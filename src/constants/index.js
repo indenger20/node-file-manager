@@ -28,6 +28,10 @@ export const OSCommands = {
   },
 };
 
+export const HashCommands = {
+  hash: "hash",
+};
+
 export const getDirrectoryMessage = (path) => `You are currently in ${path}`;
 export const getHelloMessage = (username) =>
   `Welcome to the File Manager, ${username}!`;
