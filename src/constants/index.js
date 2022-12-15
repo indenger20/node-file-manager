@@ -32,6 +32,11 @@ export const HashCommands = {
   hash: "hash",
 };
 
+export const CompressCommands = {
+  compress: "compress",
+  decompress: "decompress",
+};
+
 export const getDirrectoryMessage = (path) => `You are currently in ${path}`;
 export const getHelloMessage = (username) =>
   `Welcome to the File Manager, ${username}!`;

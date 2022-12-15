@@ -5,6 +5,7 @@ import systemService from "../services/SystemService/index.js";
 import fileSystemService from "../services/FileSystemService/index.js";
 import operationSystemService from "../services/OperationSystemService/index.js";
 import hashService from "../services/HashService/index.js";
+import compressService from "../services/CompressService/index.js";
 
 export function inputResolver(input = "") {
   const command = getInputCommand(input);
@@ -15,6 +16,7 @@ export function inputResolver(input = "") {
     isSystemCommand,
     isOSCommand,
     isHashCommand,
+    isCompressCommand,
   } = checkAllCommands(command);
 
   if (isNavigationCommand) {
@@ -35,6 +37,10 @@ export function inputResolver(input = "") {
 
   if (isHashCommand) {
     return hashService;
+  }
+
+  if (isCompressCommand) {
+    return compressService;
   }
 
   throw new Error(`Invalid input: ${command}`);

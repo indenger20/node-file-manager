@@ -5,7 +5,7 @@ import {
   NavigationCommands,
   createFailedOperationError,
 } from "../../constants/index.js";
-import { getSpecificDir } from "./helpers.js";
+import { getSpecificDir, handleSortFiles } from "./helpers.js";
 import { getDirAndFileName } from "../../helpers/index.js";
 import { isFileOrDirExisting } from "../../helpers/fs.js";
 import { getFiles } from "../../helpers/fs.js";
@@ -46,9 +46,11 @@ class NavigationService {
   async ls() {
     const allFiles = await getFiles(this.currentPath);
 
+    const sortedFiles = handleSortFiles(allFiles);
+
     return {
       type: "table",
-      data: allFiles,
+      data: sortedFiles,
     };
   }
 

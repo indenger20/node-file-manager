@@ -4,6 +4,7 @@ import {
   FsCommands,
   OSCommands,
   HashCommands,
+  CompressCommands,
 } from "../constants/index.js";
 
 const checkNavigationCommand = (command = "") =>
@@ -31,12 +32,18 @@ const checkHashCommand = (command = "") =>
     .map((entry) => entry[1])
     .some((key) => key === command);
 
+const checkCompressCommand = (command = "") =>
+  Object.entries(CompressCommands)
+    .map((entry) => entry[1])
+    .some((key) => key === command);
+
 export const checkAllCommands = (command) => {
   const isNavigationCommand = checkNavigationCommand(command);
   const isSystemCommand = checkSystemCommand(command);
   const isFileSystemCommand = checkFileSystemCommand(command);
   const isOSCommand = checkOSCommand(command);
   const isHashCommand = checkHashCommand(command);
+  const isCompressCommand = checkCompressCommand(command);
 
   return {
     isNavigationCommand,
@@ -44,5 +51,6 @@ export const checkAllCommands = (command) => {
     isFileSystemCommand,
     isOSCommand,
     isHashCommand,
+    isCompressCommand,
   };
 };
