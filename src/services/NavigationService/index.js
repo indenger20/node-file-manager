@@ -6,19 +6,16 @@ import {
   createFailedOperationError,
 } from "../../constants/index.js";
 import { getSpecificDir, handleSortFiles } from "./helpers.js";
-import { getDirAndFileName } from "../../helpers/index.js";
 import { isFileOrDirExisting } from "../../helpers/fs.js";
 import { getFiles } from "../../helpers/fs.js";
 
 const userHomeDir = homedir();
 
-const { __dirname } = getDirAndFileName(import.meta.url);
-
 class NavigationService {
   currentPath;
 
   constructor() {
-    this.currentPath = path.resolve(__dirname, "../../../");
+    this.currentPath = path.resolve(userHomeDir);
   }
 
   #updateCurrentPath(newPath) {
